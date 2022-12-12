@@ -2,7 +2,9 @@
 
 [BrainFuck](https://esolangs.org/wiki/Brainfuck) interpreter, implemented in Python.
 
-No external dependencies needed beyond the Python standard library.
+![./pyfucc-repl-thumbnail-Dec-12-2022.png](pyfucc-repl-thumbnail-Dec-12-2022.png)
+
+> No external dependencies needed beyond the Python standard library.
 
 ## BrainFuck
 
