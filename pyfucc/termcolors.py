@@ -1,4 +1,8 @@
+# TODO: Add docstrings
+# TODO: Add shebang
+
 class Colors:
+    # TODO: Change escape sequences based on operating system; currently Windows-only
     """ANSI escape sequences for terminal colors"""
     HEADER_PURPLE = '\033[95m'
     OK_BLUE = '\033[94m'

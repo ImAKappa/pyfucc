@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# TODO: Add docstrings
 
 from pyfucc.tokens import Token, TokenType
 

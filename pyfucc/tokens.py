@@ -1,3 +1,6 @@
+# TODO: Add docstrings
+# TODO: Add shebang
+
 import token
 from enum import Enum
 from dataclasses import dataclass

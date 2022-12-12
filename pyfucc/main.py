@@ -3,7 +3,6 @@ from pathlib import Path
 from datetime import datetime
 import io
 import sys
-from array import array
 
 from pyfucc.tokens import Token
 from pyfucc.scanner import Scanner, ScannerError
@@ -14,7 +13,7 @@ from pyfucc.termcolors import TermColorer, Colors
 clr = TermColorer()
 
 class PyFucc:
-    """Delagates tasks and operations to the Scanner and Interpreter"""
+    """Manages program flow and execution"""
 
     def __init__(self):
         self.name = "🧠 BrainFuck 🤯"
@@ -23,6 +22,7 @@ class PyFucc:
         self.prev_line = None
 
     def scan(self, source: str, scanner: Scanner) -> list[Token]:
+        """Scan a string into a sequence of tokens"""
         try:
             tokens = scanner.scan_tokens(source)
         except ScannerError as e:
@@ -30,6 +30,7 @@ class PyFucc:
         return tokens
 
     def interpret(self, tokens: list[Token], interpreter: Interpreter):
+        """Interpret a sequence of tokens"""
         try:
             interpreter.execute_all(tokens)
         except InvalidInput as e:
@@ -39,6 +40,7 @@ class PyFucc:
         return
 
     def show_help(self):
+        """Display "help" information"""
         print("REPL commands:")
         repl_commands = {
             ":help": "Help",
@@ -51,6 +53,7 @@ class PyFucc:
             print(f"\t{command}\t{description}")
 
     def show_about(self):
+        """Display "about" information"""
         print("This is a BrainFuck interpreter. Learn more about BrainFuck:")
         resources = [
             "https://www.youtube.com/watch?v=hdHjjBS4cs8",
@@ -61,6 +64,7 @@ class PyFucc:
             print(f"\t{resource}")
 
     def match_repl_command(self, line: str, interpreter: Interpreter):
+        """Determines action to take based on REPL command"""
         match line:
             case ":help": self.show_help()
             case ":exit": self.end()
@@ -72,8 +76,10 @@ class PyFucc:
         return
 
     def run_prompt(self) -> None:
+        """Runs the REPL"""
         print(f"{self.name} {self.version} ({datetime.today().ctime()})")
         print("Type \":help\" or \":about\" for more information")
+        # Keep track of execution number 
         exec_number = 0
         scanner = Scanner()
         interpreter = Interpreter()
@@ -85,7 +91,6 @@ class PyFucc:
             except EOFError: # Ctrl-Z on Windows, Ctrl-D on Linux/Mac
                 break
             else:
-                # Scan a line, then pass the tokens to the interpreter to update
                 tokens = self.scan(line, scanner)
                 self.interpret(tokens, interpreter)
                 if interpreter.out != "":
@@ -93,12 +98,12 @@ class PyFucc:
                     print()
                 # Interpreter should keep going, even after error
                 self.had_error = False
-                # Clear output
                 interpreter.clear_out()
                 exec_number += 1
         return
 
     def run_file(self, filepath: Path) -> None:
+        """Runs interpreter on a source file (`.bf`)"""
         with io.open(filepath, mode="r") as f:
             source = f.read()
         scanner = Scanner()
@@ -110,6 +115,7 @@ class PyFucc:
             sys.exit(65)
 
     def report(self, message: str, where: str, line: int) -> None:
+        """Reports a message to stdout"""
         report_line = f"[line {line}]" 
         report_error = clr.print("Mental Breakdown", Colors.FAIL_RED)
         report_where = f"({where})" if where != "" else ""
@@ -117,9 +123,11 @@ class PyFucc:
         self.had_error = True
 
     def error(self, message: str, line: int) -> None:
+        """Reports an error"""
         self.report(message, "", line)
 
     def end(self):
+        """Ends the REPL session"""
         sys.exit(64)
 
 

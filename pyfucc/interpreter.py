@@ -1,7 +1,7 @@
-from array import array
-
 from pyfucc.tokens import Token, TokenType
 from pyfucc.debugger import Debugger
+# TODO: Add docstrings
+# TODO: Add shebang
 
 class InterpreterError(Exception):
     """Base-class for Interpreter Errors"""
